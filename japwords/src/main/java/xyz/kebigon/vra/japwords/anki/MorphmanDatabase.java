@@ -23,7 +23,9 @@ public class MorphmanDatabase
 			try (final GZIPInputStream is = new GZIPInputStream(fis))
 			{
 				@SuppressWarnings("unchecked")
-				final Map<Map<String, String>, Object> morphemes = (Map<Map<String, String>, Object>) unpickler.load(is);
+				final Map<String, Object> loaded = (Map<String, Object>) unpickler.load(is);
+				@SuppressWarnings("unchecked")
+				final Map<Map<String, String>, Object> morphemes = (Map<Map<String, String>, Object>) loaded.get("db");
 
 				// Example morpheme infos for the expression "歩いて":
 				// norm: 歩く [normalized base form]
