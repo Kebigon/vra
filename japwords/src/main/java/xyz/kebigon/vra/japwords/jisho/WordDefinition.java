@@ -16,7 +16,7 @@ public class WordDefinition
 
 	private Collection<Kanji> kanjis;
 
-	/* package */ void mergeWith(WordDefinition o)
+	/* package */ void mergeWith(final WordDefinition o)
 	{
 		if (wanikaniLevel == null || (o.wanikaniLevel != null && wanikaniLevel > o.wanikaniLevel))
 			wanikaniLevel = o.wanikaniLevel;
@@ -31,7 +31,7 @@ public class WordDefinition
 	public static final Comparator<WordDefinition> COMPARATOR = new Comparator<>()
 	{
 		@Override
-		public int compare(WordDefinition a, WordDefinition b)
+		public int compare(final WordDefinition a, final WordDefinition b)
 		{
 			return a.word.compareTo(b.word);
 		}
@@ -40,8 +40,14 @@ public class WordDefinition
 	public static final Comparator<WordDefinition> DIFFICULTY_COMPARATOR = new Comparator<>()
 	{
 		@Override
-		public int compare(WordDefinition a, WordDefinition b)
+		public int compare(final WordDefinition a, final WordDefinition b)
 		{
+			// Prioritize N2+ words
+			if (a.getJlptLevel() < 2 && b.getJlptLevel() >= 2)
+				return 1;
+			if (b.getJlptLevel() < 2 && a.getJlptLevel() >= 2)
+				return -1;
+
 			if (a.getWanikaniLevel() != b.getWanikaniLevel())
 			{
 				if (a.getWanikaniLevel() == null)
