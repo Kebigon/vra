@@ -18,4 +18,14 @@ public class Kanji
 	private String[] wk_readings_on;
 	private String[] wk_readings_kun;
 	private String[] wk_radicals;
+
+	public int getJlpt_new()
+	{
+		return jlpt_new != null ? jlpt_new : 0;
+	}
+
+	public int getGrade()
+	{
+		return grade != null ? grade : 11;
+	}
 }

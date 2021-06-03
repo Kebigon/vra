@@ -25,6 +25,29 @@ public class WordDefinition
 	}
 
 	/*
+	 * Utils
+	 */
+
+	public boolean hasWanikaniLevel()
+	{
+		return wanikaniLevel != null;
+	}
+
+	public int getKanjiJlpt()
+	{
+		return kanjis.stream() //
+				.map(k -> k.getJlpt_new()) //
+				.reduce(5, Math::min);
+	}
+
+	public int getKanjiGrade()
+	{
+		return kanjis.stream() //
+				.map(k -> k.getGrade()) //
+				.reduce(1, Math::max);
+	}
+
+	/*
 	 * Comparators
 	 */
 
@@ -50,9 +73,9 @@ public class WordDefinition
 
 			if (a.getWanikaniLevel() != b.getWanikaniLevel())
 			{
-				if (a.getWanikaniLevel() == null)
+				if (!a.hasWanikaniLevel())
 					return 1;
-				if (b.getWanikaniLevel() == null)
+				if (!b.hasWanikaniLevel())
 					return -1;
 				return Integer.compare(a.getWanikaniLevel(), b.getWanikaniLevel());
 			}
@@ -60,13 +83,13 @@ public class WordDefinition
 			if (a.getJlptLevel() != b.getJlptLevel())
 				return -Integer.compare(a.getJlptLevel(), b.getJlptLevel());
 
-			final int aKanjiJlpt = a.getKanjis().stream().map(k -> k.getJlpt_new()).reduce(Math::min).orElse(5);
-			final int bKanjiJlpt = b.getKanjis().stream().map(k -> k.getJlpt_new()).reduce(Math::min).orElse(5);
+			final int aKanjiJlpt = a.getKanjiJlpt();
+			final int bKanjiJlpt = b.getKanjiJlpt();
 			if (aKanjiJlpt != bKanjiJlpt)
 				return -Integer.compare(aKanjiJlpt, bKanjiJlpt);
 
-			final int aKanjiGrade = a.getKanjis().stream().map(k -> k.getGrade()).reduce(Math::max).orElse(1);
-			final int bKanjiGrade = b.getKanjis().stream().map(k -> k.getGrade()).reduce(Math::max).orElse(1);
+			final int aKanjiGrade = a.getKanjiGrade();
+			final int bKanjiGrade = b.getKanjiGrade();
 			if (aKanjiGrade != bKanjiGrade)
 				return Integer.compare(aKanjiGrade, bKanjiGrade);
 
